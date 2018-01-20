@@ -1,0 +1,57 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="currentUser">
+    <img [src]="currentUser.profilePhoto" class="profilePhoto" />
+    <div class="user-container">
+      <h2 text-center class="name">{{currentUser.name}}</h2>
+      <p text-center class="bio">{{currentUser.bio}}</p>
+    </div>
+
+    <ion-list>
+      <ion-list-header text-center>
+        <span ion-text color='primary'>{{this.currentUser._menuItemsMeta.count}}</span>&nbsp;Menu Items
+      </ion-list-header>
+      <p text-center class="add" (click)="createMenuItem()"><ion-icon color="primary" name="add"></ion-icon> add Menu Item</p>
+      <ion-item *ngFor="let item of menuItems">
+        <ion-avatar item-left>
+          <img [src]="item.photo" class="item-photo"/>
+        </ion-avatar>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-9>
+              <h4 class="item-name">{{item.name}}</h4>
+            </ion-col>
+            <ion-col col-3>
+              <p class="item-price">${{item.price}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <p class="item-description">{{item.description}}</p>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="!currentUser">
+    <div class="button-wrap" padding>
+      <button ion-button class="login-button" round block outline (click)="login()">
+        Log in
+      </button>
+      <button ion-button class="signup-button" round block outline (click)="signup()">
+        Sign Up
+      </button>
+    </div>
+  </div>
+
+</ion-content>

@@ -31,11 +31,15 @@ export class LandingPage {
   }
 
   login() {
-    this.navCtrl.push( LoginPage );
+    this.navCtrl.push(LoginPage, {
+      from: "landing"
+    });
   }
 
   signup() {
-    this.navCtrl.push( SignupPage );
+    this.navCtrl.push( SignupPage, {
+      from: "landing"
+    });
   }
 
 }

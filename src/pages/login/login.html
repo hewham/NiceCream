@@ -7,6 +7,11 @@
 <ion-header>
 
   <ion-navbar>
+    <div *ngIf="from!='landing'">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </div>
     <ion-title>Log In</ion-title>
   </ion-navbar>
 

@@ -1,7 +1,11 @@
 page-signup2 {
+  ion-content {
+    background: linear-gradient(#EFEFBB, #D4D3DD);
+  }
+  
   img {
     padding-bottom: 0%;
-    border-radius: 30px !important;
+    border-radius: 50% !important;
     border: color($colors, 'primary') 2px solid;
   }
 
@@ -11,12 +15,16 @@ page-signup2 {
     right: 4%;
     border: color($colors, 'primary') 1px solid;
     background-color: white;
-    border-radius: 20%;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
   }
   .no-photo-button{
     border: color($colors, 'primary') 1px solid;
     background-color: white;
-    border-radius: 20%;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
   }
 
   .gallery-button {

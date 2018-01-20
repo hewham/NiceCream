@@ -1,0 +1,48 @@
+page-profile {
+
+
+
+  .profilePhoto {
+    border-radius: 50%;
+    border: 3px solid color($colors, 'primary');
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 20px;
+  }
+
+  .user-container {
+    background-color: #e8e8e8;
+    padding-bottom: 6px;
+    padding-top: 1px;
+    margin-top: 4px;
+  }
+
+  .item-price {
+    color: limegreen;
+    text-align: right;
+  }
+
+  .item-name {
+    margin-left: -4%;
+  }
+
+  .item-photo {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+
+  .button-wrap {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+  }
+
+  .login-button {
+    margin-bottom: 20px;
+  }
+
+  .signup-button {
+
+  }
+}

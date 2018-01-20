@@ -30,8 +30,11 @@ id: any;
 showEmailSpinner: boolean = false;
 nameTaken: any;
 emailTaken: any;
+from: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public alertCtrl: AlertController, public loadingCtrl: LoadingController, private apollo: Apollo, public keyboard: Keyboard) {
+
+    this.from = navParams.get("from");
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.email])],
@@ -71,7 +74,7 @@ emailTaken: any;
     this.keyboard.close();
   }
 
-  gotoRegisterThird() {
+  gotosignup2() {
     if (this.loginForm.valid){
       if(this.emailTaken == true){
         let alert = this.alertCtrl.create({
@@ -92,7 +95,7 @@ emailTaken: any;
           variables: {
             email: this.loginForm.value.email,
             password: this.loginForm.value.password,
-            profilePhoto: 'http://i.imgur.com/THZaDRZ.jpg'
+            profilePhoto: 'https://i.imgur.com/WbMydG3.jpg'
           }
         }).toPromise().then( ({data}) => {
           this.id = data;
@@ -111,7 +114,7 @@ emailTaken: any;
             var currentUser = {
               id: this.id,
               email: this.loginForm.value.email,
-              profilePhoto: 'http://i.imgur.com/THZaDRZ.jpg'
+              profilePhoto: 'https://i.imgur.com/WbMydG3.jpg'
             }
             window.localStorage.setItem('currentUser', JSON.stringify(currentUser));
             this.navCtrl.push(Signup2Page,{

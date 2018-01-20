@@ -1,0 +1,35 @@
+page-create-menu-item {
+  img {
+    padding-bottom: 0%;
+    border-radius: 50% !important;
+    border: color($colors, 'primary') 2px solid;
+  }
+
+  ion-label {
+    color: #606060;
+  }
+
+  .photo-button{
+    position: absolute;
+    bottom: 7%;
+    right: 4%;
+    border: color($colors, 'primary') 1px solid;
+    background-color: white;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+  }
+  .no-photo-button{
+    border: color($colors, 'primary') 1px solid;
+    background-color: white;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+  }
+
+  .gallery-button {
+    bottom: 0px;
+    position: relative;
+    width: 100%;
+  }
+}

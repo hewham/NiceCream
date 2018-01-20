@@ -19,6 +19,44 @@ page-home {
      top: 60%;
    }
 
+   .button-off {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 75vw;
+     height: 75vw;
+     margin-left: 12.5vw;
+     margin-top: 30vw;
+     border: solid 3px color($colors, 'primary');
+     border-radius: 50%;
+     background-color: color($colors, 'secondary');
+   }
+
+   .button-off-text {
+     font-size: 2.4em;
+     color: white;
+     padding-top: 20vw;
+   }
+
+   .button-on {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 75vw;
+     height: 75vw;
+     margin-left: 12.5vw;
+     margin-top: 30vw;
+     border: solid 3px color($colors, 'secondary');
+     border-radius: 50%;
+     background-color: color($colors, 'primary');
+   }
+
+   .button-on-text {
+     font-size: 2.4em;
+     color: white;
+     padding-top: 20vw;
+   }
+
 
 
 

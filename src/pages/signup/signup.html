@@ -7,7 +7,12 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>sSign Up</ion-title>
+    <div *ngIf="from!='landing'">
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </div>
+    <ion-title>Sign Up</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,7 +20,7 @@
 
 <ion-content padding (dblclick)='closeKeyboard()' no-bounce>
   <div>
-    <form [formGroup]="loginForm" (submit)="gotoRegisterThird()" novalidate>
+    <form [formGroup]="loginForm" (submit)="gotosignup2()" novalidate>
       <ion-item>
         <ion-label floating>Email</ion-label>
         <ion-input #email formControlName="email" type="email" (change)="checkEmail()"

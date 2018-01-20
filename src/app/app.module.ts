@@ -7,8 +7,12 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { LandingPage } from '../pages/landing/landing';
+import { TrackPage } from '../pages/track/track';
 import { SignupPage } from '../pages/signup/signup';
+import { Signup1Page } from '../pages/signup1/signup1';
 import { Signup2Page } from '../pages/signup2/signup2';
+import { ProfilePage } from '../pages/profile/profile';
+import { CreateMenuItemPage } from '../pages/create-menu-item/create-menu-item';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,6 +27,7 @@ import { provideClient } from './client';
 import { ApolloModule } from 'apollo-angular';
 import { HttpModule } from '@angular/http';
 import { LocationProvider } from '../providers/location';
+import { UserProvider } from '../providers/user';
 
 @NgModule({
   declarations: [
@@ -31,8 +36,12 @@ import { LocationProvider } from '../providers/location';
     ListPage,
     LoginPage,
     LandingPage,
+    TrackPage,
     SignupPage,
-    Signup2Page
+    Signup1Page,
+    Signup2Page,
+    ProfilePage,
+    CreateMenuItemPage
   ],
   imports: [
     BrowserModule,
@@ -47,8 +56,12 @@ import { LocationProvider } from '../providers/location';
     ListPage,
     LoginPage,
     LandingPage,
+    TrackPage,
     SignupPage,
-    Signup2Page
+    Signup1Page,
+    Signup2Page,
+    ProfilePage,
+    CreateMenuItemPage
   ],
   providers: [
     StatusBar,
@@ -56,7 +69,8 @@ import { LocationProvider } from '../providers/location';
     Geolocation,
     Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    LocationProvider
+    LocationProvider,
+    UserProvider
   ]
 })
 export class AppModule {}

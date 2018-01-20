@@ -19,15 +19,18 @@ import gql from 'graphql-tag';
 export class Signup2Page {
 
   id: any;
+  driver: any;
   profileImageChanged: boolean = false;
   profileImageSrc: any;
   loading: any;
-
   form: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public actionSheetCtrl: ActionSheetController, public camera: Camera, public loadingCtrl: LoadingController, public apollo: Apollo, public alertCtrl: AlertController) {
 
     this.id = navParams.get("id");
+    this.driver = navParams.get("driver");
     console.log("id: ",this.id);
+    console.log("driver: ",this.driver);
 
     this.form = formBuilder.group({
       name: ['', Validators.compose([Validators.required])],
@@ -118,11 +121,13 @@ saveProfileMutation = gql`
     $id: ID!,
     $name: String!,
     $bio: String!,
+    $driver: Boolean!,
     $profilePhoto: String!) {
       updateUser(
         id: $id,
         name: $name,
         bio: $bio,
+        driver: $driver,
         profilePhoto: $profilePhoto) {
           id
         }
@@ -139,7 +144,7 @@ saveProfileMutation = gql`
         this.loading.present();
 
         if(!this.profileImageChanged){
-          this.profileImageSrc = 'http://i.imgur.com/THZaDRZ.jpg';
+          this.profileImageSrc = 'https://i.imgur.com/WbMydG3.jpg';
         }
 
         this.apollo.mutate ({
@@ -148,10 +153,11 @@ saveProfileMutation = gql`
             id: this.id,
             name: this.form.value.name,
             bio: this.form.value.bio,
+            driver: this.driver,
             profilePhoto: this.profileImageSrc
           }
         }).toPromise().then(()=>{
-          this.navCtrl.push(HomePage);
+          this.navCtrl.setRoot(HomePage);
         });
       }
       if (!this.form.valid){

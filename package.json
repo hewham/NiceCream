@@ -22,7 +22,7 @@
         "@angular/platform-browser-dynamic": "4.4.4",
         "@ionic-native/camera": "^4.5.2",
         "@ionic-native/core": "4.4.0",
-        "@ionic-native/geolocation": "^4.5.2",
+        "@ionic-native/geolocation": "^4.0.1",
         "@ionic-native/splash-screen": "4.4.0",
         "@ionic-native/status-bar": "4.4.0",
         "@ionic/pro": "1.0.16",
@@ -36,8 +36,9 @@
         "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-camera": "^4.0.1",
+        "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-device": "^1.1.4",
-        "cordova-plugin-geolocation": "^4.0.1",
+        "cordova-plugin-geolocation": "^2.4.3",
         "cordova-plugin-ionic-webview": "^1.1.16",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-whitelist": "^1.3.1",
@@ -58,6 +59,22 @@
         "@ionic/app-scripts": "3.0.1",
         "typescript": "2.3.4"
     },
+    "cordovaPlugins": [
+        "cordova-plugin-whitelist",
+        "cordova-plugin-statusbar",
+        "cordova-plugin-console",
+        "cordova-plugin-device",
+        "cordova-plugin-splashscreen",
+        "ionic-plugin-keyboard"
+    ],
+    "cordovaPlatforms": [
+        "ios",
+        {
+            "platform": "ios",
+            "version": "",
+            "locator": "ios"
+        }
+    ],
     "description": "An Ionic project",
     "cordova": {
         "plugins": {

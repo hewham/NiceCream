@@ -1,5 +1,6 @@
 import {
   NavController,
+  NavParams,
   LoadingController,
   AlertController,
   ToastController,
@@ -27,9 +28,11 @@ export class LoginPage {
   submitAttempt: boolean = false;
   loading: any;
   toast: any;
+  from: any;
 
-  constructor(public nav: NavController, public formBuilder: FormBuilder,
-              public alertCtrl: AlertController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private apollo: Apollo, public keyboard: Keyboard) {
+  constructor(public nav: NavController, public navParams: NavParams, public formBuilder: FormBuilder,public alertCtrl: AlertController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private apollo: Apollo, public keyboard: Keyboard) {
+
+    this.from = navParams.get("from");
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required])],

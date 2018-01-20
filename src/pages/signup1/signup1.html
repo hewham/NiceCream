@@ -1,0 +1,24 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col (click)="next(false)">
+        <p text-center class="creamer">Creamer</p>
+        <img src='../../assets/imgs/icon.png' />
+      </ion-col>
+      <ion-col (click)="next(true)">
+        <p text-center class="creamer">Driver</p>
+        <img src='../../assets/icon/truck.png' />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
