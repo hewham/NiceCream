@@ -1,3 +1,28 @@
 page-signup2 {
+  img {
+    padding-bottom: 0%;
+    border-radius: 30px !important;
+    border: color($colors, 'primary') 2px solid;
+  }
+
+  .photo-button{
+    position: absolute;
+    bottom: 7%;
+    right: 4%;
+    border: color($colors, 'primary') 1px solid;
+    background-color: white;
+    border-radius: 20%;
+  }
+  .no-photo-button{
+    border: color($colors, 'primary') 1px solid;
+    background-color: white;
+    border-radius: 20%;
+  }
+
+  .gallery-button {
+    bottom: 0px;
+    position: relative;
+    width: 100%;
+  }
 
 }

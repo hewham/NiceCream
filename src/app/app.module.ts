@@ -15,6 +15,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 //ionic-native plugins
 import { Geolocation } from '@ionic-native/geolocation';
+import { Camera } from '@ionic-native/camera';
+
 
 //Modules for Apollo
 import { provideClient } from './client';
@@ -52,6 +54,7 @@ import { LocationProvider } from '../providers/location';
     StatusBar,
     SplashScreen,
     Geolocation,
+    Camera,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LocationProvider
   ]

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController, MenuController } from 'ionic-angular';
 
 import { LocationProvider } from '../../providers/location';
 
@@ -16,11 +16,29 @@ export class HomePage {
 
   map: any;
 
-  location: any;
+  location: any = {
+    latitude: 35,
+    longitude: -96
+  };
+  zoomLevel: any;
+  loading: any;
+  loadingFlag: boolean = false;
+  showImage: boolean = true;
 
 
-  constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController) {
 
+
+  }
+
+  ngOnInit() {
+    this.menuCtrl.swipeEnable(false);
+    this.showImage = true;
+    // this.loading = this.loadingCtrl.create();
+    // this.loading.present();
+    // this.zoomLevel = 3;
+    // this.drawMap();
+    this.loadingFlag = false;
     this.locationProvider.getLocation().then((data) => {
       console.log("GOT location, getting events...");
       console.log("LOCATION DATA RETURNED IS: ",data);
@@ -37,14 +55,17 @@ export class HomePage {
           this.setUserLocationBasedOffCurrentUser();
         }
       }
+      this.loadingFlag = true;
+      this.showImage = false;
+      this.zoomLevel = 12;
+      // this.loading.dismiss();
+      this.drawMap();
     });
-
   }
 
-  ionViewDidLoad() {
-    this.drawMap();
-
-  }
+  ionViewWillLeave() {
+    this.menuCtrl.swipeEnable(true);
+ }
 
   setUserLocationBasedOffCurrentUser() {
   let toast = this.toastCtrl.create({
@@ -61,16 +82,21 @@ export class HomePage {
 }
 
   drawMap() {
-    this.map = Leaflet.map('map');
+    if (this.map != undefined){
+      this.map.remove();
+      this.map = Leaflet.map('map');
+    }else{
+      this.map = Leaflet.map('map');
+    }
     Leaflet.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGV3aGFtIiwiYSI6ImNqNWl5dzRrNzJoZWgyd25xemNycHd4cmEifQ.Y6GymqkSWKSy60flBLgKpQ', {
       maxZoom: 16
     }).addTo(this.map);
-    this.map.setView([42.7018, -84.4822], 12);
+    this.map.setView([this.location.latitude, this.location.longitude], this.zoomLevel);
 
     var iceCreamIcon: any;
     iceCreamIcon = Leaflet.icon ({
       iconUrl: "assets/icon/ice-cream.png",
-      iconSize:     [50, 45], // size of the icon
+      iconSize:     [45, 45], // size of the icon
       iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
     });
 
@@ -80,7 +106,7 @@ export class HomePage {
       closeButton: false
     });
 
-    Leaflet.marker([42.7018, -84.4822], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
+    Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
   }
 
 }

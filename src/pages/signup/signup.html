@@ -17,22 +17,6 @@
   <div>
     <form [formGroup]="loginForm" (submit)="gotoRegisterThird()" novalidate>
       <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input #username formControlName="username" type="text" (change)="checkUsername()"
-          [class.invalid]="!loginForm.controls.username.valid && (usernameChanged || submitAttempt)"></ion-input>
-      </ion-item>
-      <div class='check-space'>
-        <div *ngIf='showUsernameSpinner==true'>
-          <ion-spinner class='spinner'></ion-spinner>
-        </div>
-        <p ion-text color='primary' *ngIf='nameTaken==false'>
-          Username is available
-        </p>
-        <p ion-text color='danger' *ngIf='nameTaken==true'>
-          Username is taken
-        </p>
-      </div>
-      <ion-item>
         <ion-label floating>Email</ion-label>
         <ion-input #email formControlName="email" type="email" (change)="checkEmail()"
           [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
@@ -41,7 +25,7 @@
         <div *ngIf='showEmailSpinner==true'>
           <ion-spinner class='spinner'></ion-spinner>
         </div>
-        <p ion-text color='primary' *ngIf="emailTaken==false && !loginForm.hasError('email', 'email')">
+        <p ion-text class="email-is-available-text" *ngIf="emailTaken==false && !loginForm.hasError('email', 'email')">
           Email is available
         </p>
         <p ion-text color='danger' *ngIf="emailTaken==true && !loginForm.hasError('email', 'email')">

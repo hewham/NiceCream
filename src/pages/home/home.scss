@@ -1,8 +1,23 @@
 page-home {
 
-    #map {
-        height: 100%;
-    }
+  img {
+    height: 100%;
+    object-fit: cover;
+  }
+  .img-container {
+    height: 100%;
+  }
+
+  #map {
+      height: 100%;
+  }
+
+  .spinner {
+    position: absolute;
+     left: 50%;
+     transform: translateX(-50%);
+     top: 60%;
+   }
 
 
 

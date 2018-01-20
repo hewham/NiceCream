@@ -44,7 +44,7 @@ export class LoginPage {
   }
 
 
-  gotoTabs() {
+  submit() {
     this.loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: 'Logging in...'
@@ -56,6 +56,7 @@ export class LoginPage {
         userInfo.data = data;
         // console.log(userInfo.data.signinUser.token);
         window.localStorage.setItem('graphcoolToken', userInfo.data.signinUser.token);
+        console.log("SET graphcool token: ",userInfo.data.signinUser.token);
       }
 
     }).then(() => {

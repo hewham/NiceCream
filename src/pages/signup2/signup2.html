@@ -1,18 +1,50 @@
-<!--
-  Generated template for the Signup2Page page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>signup2</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <h1 class="title">Create Profile</h1>
+
+  <form [formGroup]="form" (submit)="done()" novalidate>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input #name formControlName="name" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Bio</ion-label>
+        <ion-textarea class="resize" #bio formControlName="bio" type="text"></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+
+  <div>
+    <ion-list>
+      <ion-list-header text-center>
+        Ice Cream Truck Photo
+      </ion-list-header>
+    </ion-list>
+    <div class="gallery-button" text-center>
+      <img [src]="profileImageSrc" *ngIf="profileImageSrc"/>
+      <button *ngIf='profileImageChanged==true' class='photo-button' ion-button icon-only (click)='editPhoto("profile")'>
+        <ion-icon color='primary' name='camera'></ion-icon>
+      </button>
+      <button *ngIf='profileImageChanged==false' class='no-photo-button' ion-button icon-only (click)='editPhoto("profile")'>
+        <ion-icon color='primary' name='camera'></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <div padding>
+    <button  ion-button round outline block (click)='saveProfile()' color="primary">
+      Save Profile
+    </button>
+  </div>
 
 </ion-content>

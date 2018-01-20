@@ -26,19 +26,14 @@ emailChanged: boolean = false;
 passwordChanged: boolean = false;
 submitAttempt: boolean = false;
 loading: any;
-type: any;
 id: any;
-showUsernameSpinner: boolean = false;
 showEmailSpinner: boolean = false;
 nameTaken: any;
 emailTaken: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public alertCtrl: AlertController, public loadingCtrl: LoadingController, private apollo: Apollo, public keyboard: Keyboard) {
-    this.type = navParams.get('type');
-    console.log('type: ' + this.type);
 
     this.loginForm = formBuilder.group({
-      username: ['', Validators.compose([Validators.minLength(1), Validators.required])],
       email: ['', Validators.compose([Validators.email])],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
     });
@@ -48,16 +43,9 @@ emailTaken: any;
     mutation createUser(
       $email: String!,
       $password: String!,
-      $username: String!,
-      $type: String!,
-      $profilePhoto: String!,
-      $coverPhoto: String!) {
+      $profilePhoto: String!) {
       createUser(authProvider: { email: {email: $email, password: $password}},
-        username: $username,
-        type: $type,
-        profilePhoto:
-        $profilePhoto,
-        coverPhoto: $coverPhoto) {
+        profilePhoto: $profilePhoto) {
         id
       }
     }
@@ -85,14 +73,7 @@ emailTaken: any;
 
   gotoRegisterThird() {
     if (this.loginForm.valid){
-      if(this.nameTaken == true){
-        let alert = this.alertCtrl.create({
-          title: '',
-          message: 'Username is taken'
-        });
-        alert.present();
-      }
-      else if(this.emailTaken == true){
+      if(this.emailTaken == true){
         let alert = this.alertCtrl.create({
           title: '',
           message: 'Email is already used'
@@ -111,10 +92,7 @@ emailTaken: any;
           variables: {
             email: this.loginForm.value.email,
             password: this.loginForm.value.password,
-            username: this.loginForm.value.username,
-            type: this.type,
-            profilePhoto: 'http://i.imgur.com/THZaDRZ.jpg',
-            coverPhoto: 'https://i.imgur.com/66TBTmd.jpg'
+            profilePhoto: 'http://i.imgur.com/THZaDRZ.jpg'
           }
         }).toPromise().then( ({data}) => {
           this.id = data;
@@ -126,31 +104,27 @@ emailTaken: any;
             if (data && this.loginForm.valid) {
               userInfo.data = data;
               window.localStorage.setItem('graphcoolToken', userInfo.data.signinUser.token);
+              console.log("SET graphcool token: ",userInfo.data.signinUser.token);
             }
           }).then(() => {
             //Create and save currentUser object, then push to edit-location-map
             var currentUser = {
               id: this.id,
               email: this.loginForm.value.email,
-              username: this.loginForm.value.password,
-              type: this.type,
-              range: 100,
-              gigRange: 75,
-              profilePhoto: 'http://i.imgur.com/THZaDRZ.jpg',
-              coverPhoto: 'https://i.imgur.com/66TBTmd.jpg'
+              profilePhoto: 'http://i.imgur.com/THZaDRZ.jpg'
             }
             window.localStorage.setItem('currentUser', JSON.stringify(currentUser));
             this.navCtrl.push(Signup2Page,{
-              id: this.id,
-              mapType: 'register'
+              id: this.id
             });
           });
         }).catch( (err) => {
           //CATCH GRAPHQL ERROR, USER ALREADY EXISTS, SHOULD NEVER GET HERE
+          console.log("ERROR: ",err);
           this.loading.dismiss();
           let alert = this.alertCtrl.create({
             title: '',
-            message: 'User already exists, check username and email'
+            message: 'User already exists, check email'
           });
           alert.present();
         });
@@ -158,14 +132,7 @@ emailTaken: any;
     }
     //ERROR CATCHING
     if(!this.loginForm.valid){
-      if(this.loginForm.controls.username.valid == false){
-        let alert = this.alertCtrl.create({
-          title: '',
-          message: 'Please enter a Username'
-        });
-        alert.present();
-      }
-      else if(this.loginForm.controls.email.valid == false){
+      if(this.loginForm.controls.email.valid == false){
         let alert = this.alertCtrl.create({
           title: '',
           message: 'Please enter a valid email'
@@ -192,35 +159,6 @@ emailTaken: any;
         password: this.loginForm.value.password
       }
     }).toPromise();
-  }
-
-  checkUsername(){
-    console.log('check username');
-    this.nameTaken = undefined;
-    this.showUsernameSpinner = true;
-    this.apollo.query({
-      query: gql`
-        query allUsers($username: String) {
-          allUsers(filter:{username: $username} ) {
-            id
-          }
-        }
-      `,
-      variables: {
-        username: this.loginForm.value.username
-      }
-    }).toPromise().then(({data}) => {
-      var nameCheck: any;
-      nameCheck = data;
-      nameCheck = nameCheck.allUsers[0];
-      this.showUsernameSpinner = false;
-      if(nameCheck != undefined){
-        this.nameTaken = true;
-      }
-      if(nameCheck == undefined){
-        this.nameTaken = false;
-      }
-    });
   }
 
   checkEmail(){

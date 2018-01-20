@@ -5,8 +5,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { LoginPage } from '../pages/login/login';
 
 import { LandingPage } from '../pages/landing/landing';
+import { Signup2Page } from '../pages/signup2/signup2';
 
 
 @Component({
@@ -15,7 +17,6 @@ import { LandingPage } from '../pages/landing/landing';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  // rootPage: any = HomePage;
   rootPage: any = LandingPage;
 
   pages: Array<{title: string, component: any}>;
@@ -23,10 +24,17 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
+    if (window.localStorage.getItem('graphcoolToken') != null) {
+      this.rootPage = HomePage;
+    } else {
+      this.rootPage = LandingPage;
+    }
+
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'List', component: ListPage },
+      { title: 'Log In', component: LoginPage }
     ];
 
   }

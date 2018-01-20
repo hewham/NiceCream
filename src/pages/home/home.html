@@ -8,5 +8,11 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf="showImage" class="img-container">
+    <img src='assets/imgs/splash.png' />
+    <ion-spinner class='spinner'></ion-spinner>
+  </div>
+
   <div id="map"></div>
+
 </ion-content>

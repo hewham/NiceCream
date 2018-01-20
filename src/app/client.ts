@@ -23,7 +23,7 @@ import { ApolloClient, createNetworkInterface } from 'apollo-client';
 // }
 
 const networkInterface = createNetworkInterface({
-  uri: 'https://api.graph.cool/simple/v1/cj0dxtf1mrvfp018243hjoigl'
+  uri: 'https://api.graph.cool/simple/v1/cjcms618d2ykh016947uqog8w'
   // uri: 'wss://subscriptions.graph.cool/v1/cj0dxtf1mrvfp018243hjoigl'
 });
 
