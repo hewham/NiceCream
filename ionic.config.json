@@ -1,0 +1,8 @@
+{
+  "name": "NiceCream",
+  "app_id": "26c256c5",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

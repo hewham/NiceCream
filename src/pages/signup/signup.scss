@@ -1,0 +1,40 @@
+page-signup {
+
+    ion-content {
+      background: linear-gradient(#EFEFBB, #D4D3DD);
+    }
+
+    img {
+      padding-top: 20%;
+      padding-bottom: 0%;
+    }
+    ion-item {
+      background-color: transparent !important;
+      color: black !important;
+    }
+
+    .forgotPass {
+      text-align: center;
+      padding-top: 10px;
+      // color: lightgrey;
+    }
+
+    .gallery-button {
+      bottom: 30px;
+      position: relative;
+      width: 100%;
+  }
+
+    .or {
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .check-space{
+      height: 20px;
+      padding-left: 5%;
+      text-align: right !important;
+    }
+
+}

@@ -1,0 +1,27 @@
+page-login {
+  ion-content {
+    background: linear-gradient(#EFEFBB, #D4D3DD);
+  }
+
+  img {
+    padding-top: 20%;
+    padding-bottom: 0%;
+  }
+  ion-item {
+    background-color: transparent !important;
+    color: black !important;
+  }
+
+  .forgotPass {
+    text-align: center;
+    padding-top: 10px;
+    // color: lightgrey;
+  }
+
+  .or {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+}
