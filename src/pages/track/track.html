@@ -22,10 +22,12 @@
     <div *ngIf="!tracking" class="button-off" (click)='startTracking()'>
       <p text-center class="button-off-text">Start Tracking</p>
     </div>
-    <div *ngIf="tracking" class="button-on" (click)='startTracking()'>
-      <p text-center class="button-on-text">Tracking <ion-icon color="secondary" name="checkmark"></ion-icon></p>
-    </div>
+
   </div>
 
   <div id="trackMap"></div>
+
+  <div *ngIf="tracking" class="button-on" (click)='stopTracking()'>
+    <p text-center class="button-on-text">Stop Tracking</p>
+  </div>
 </ion-content>

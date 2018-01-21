@@ -62,7 +62,7 @@ export class TrackPage {
 
     ionViewWillLeave() {
       this.menuCtrl.swipeEnable(true);
-      this.watch.unsubscribe();
+      // this.watch.unsubscribe();
       // clearInterval(this.interval);
     }
 
@@ -83,29 +83,29 @@ export class TrackPage {
             //No error detecting current location
             this.location = data;
 
-            this.apollo.mutate ({
-              mutation: gql`
-                mutation updateUser(
-                  $id: ID!,
-                  $lat: Float,
-                  $lng: Float) {
-                    updateUser(
-                      id: $id,
-                      lat: $lat,
-                      lng: $lng) {
-                        id
-                      }
-                    }
-                  `,
-              variables: {
-                id: this.currentUser.id,
-                lat: this.location.latitude,
-                lng: +this.location.longitude,
-              }
-            }).toPromise().then(({data})=>{
-              console.log("uploaded location to graph.cool!")
-            });
-            
+            // this.apollo.mutate ({
+            //   mutation: gql`
+            //     mutation updateUser(
+            //       $id: ID!,
+            //       $lat: Float,
+            //       $lng: Float) {
+            //         updateUser(
+            //           id: $id,
+            //           lat: $lat,
+            //           lng: $lng) {
+            //             id
+            //           }
+            //         }
+            //       `,
+            //   variables: {
+            //     id: this.currentUser.id,
+            //     lat: this.location.latitude,
+            //     lng: +this.location.longitude,
+            //   }
+            // }).toPromise().then(({data})=>{
+            //   console.log("uploaded location to graph.cool!")
+            // });
+
           this.loadingFlag = true;
           this.showImage = false;
           this.zoomLevel = 12;
@@ -123,7 +123,11 @@ export class TrackPage {
 
     track() {
       console.log("in track")
-      this.watch = this.geolocation.watchPosition();
+      var options = {
+        timeout : 10000,
+        enableHighAccuracy: true
+      }
+      this.watch = this.geolocation.watchPosition(options);
       this.watch.subscribe((data) => {
        // data can be a set of coordinates, or an error (if an error occurred).
        console.log("IN geo watch, lat: ",data.coords.latitude,", lng: ",data.coords.longitude);

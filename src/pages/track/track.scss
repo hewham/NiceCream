@@ -40,21 +40,23 @@ page-track {
 
    .button-on {
      position: absolute;
-     top: 0;
-     left: 0;
-     width: 75vw;
-     height: 75vw;
-     margin-left: 12.5vw;
+     bottom: 2vw;
+     left: 35vw;;
+     width: 30vw;
+     height: 30vw;
+     // margin-left: 12.5vw;
      margin-top: 30vw;
-     border: solid 3px color($colors, 'secondary');
+     border: solid 3px lightgrey;
      border-radius: 50%;
-     background-color: color($colors, 'primary');
+     background-color: color($colors, 'danger');
+     z-index: 1000;
    }
 
    .button-on-text {
-     font-size: 2.4em;
+     font-size: 1.6em;
      color: white;
-     padding-top: 20vw;
+     padding-top: 0vw;
+     // width: 25vw;
    }
 
 

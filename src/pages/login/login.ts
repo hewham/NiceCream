@@ -4,11 +4,15 @@ import {
   LoadingController,
   AlertController,
   ToastController,
-  Keyboard } from 'ionic-angular';
+  Keyboard,
+  Events } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+
+
 import { HomePage } from '../home/home';
 import { TrackPage } from '../track/track';
+
 
 
 //Apollo connection
@@ -31,7 +35,8 @@ export class LoginPage {
   toast: any;
   from: any;
 
-  constructor(public nav: NavController, public navParams: NavParams, public formBuilder: FormBuilder,public alertCtrl: AlertController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private apollo: Apollo, public keyboard: Keyboard) {
+  constructor(public nav: NavController, public navParams: NavParams, public formBuilder: FormBuilder,public alertCtrl: AlertController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private apollo: Apollo, public keyboard: Keyboard,
+  public events: Events) {
 
     this.from = navParams.get("from");
 
@@ -65,6 +70,7 @@ export class LoginPage {
 
     }).then(() => {
       this.loading.dismiss();
+      this.events.publish('user:loggedin', Date.now());
       this.nav.setRoot(TrackPage);
     }).catch( (err) => {
       this.loading.dismiss();

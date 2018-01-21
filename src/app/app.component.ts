@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -23,7 +23,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
     this.initializeApp();
 
     if (window.localStorage.getItem('graphcoolToken') != null) {
@@ -57,6 +57,15 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.events.subscribe('user:loggedin', (time) => {
+        console.log('User logged in at time: ', time);
+        this.pages = [
+          { title: 'Start Tracking', component: TrackPage },
+          { title: 'Cream Map', component: HomePage },
+          { title: 'Truck List', component: ListPage },
+          { title: 'Profile', component: ProfilePage },
+        ];
+      });
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
@@ -68,5 +77,15 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  setPages() {
+    console.log("resetting pages");
+    this.pages = [
+      { title: 'Start Tracking', component: TrackPage },
+      { title: 'Cream Map', component: HomePage },
+      { title: 'Truck List', component: ListPage },
+      { title: 'Profile', component: ProfilePage },
+    ];
   }
 }

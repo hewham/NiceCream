@@ -4,7 +4,8 @@ import {
   LoadingController,
   NavParams,
   AlertController,
-  Keyboard } from 'ionic-angular';
+  Keyboard,
+  Events } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
@@ -32,7 +33,7 @@ nameTaken: any;
 emailTaken: any;
 from: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public alertCtrl: AlertController, public loadingCtrl: LoadingController, private apollo: Apollo, public keyboard: Keyboard) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder, public alertCtrl: AlertController, public loadingCtrl: LoadingController, private apollo: Apollo, public keyboard: Keyboard, public events: Events) {
 
     this.from = navParams.get("from");
 
@@ -117,6 +118,8 @@ from: any;
               profilePhoto: 'https://i.imgur.com/WbMydG3.jpg'
             }
             window.localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            this.events.publish('user:loggedin', Date.now());
+
             this.navCtrl.push(Signup2Page,{
               id: this.id
             });

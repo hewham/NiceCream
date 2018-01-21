@@ -94,7 +94,7 @@ export class HomePage {
          return function() {
             self.track();
         }
-      })(this), 4000);
+      })(this), 5000);
   }
 
   track(){
@@ -131,7 +131,7 @@ export class HomePage {
       var iceCream: any;
       iceCream = Leaflet.icon ({
         iconUrl: "assets/icon/ice-cream.png",
-        iconSize:     [65, 65], // size of the icon
+        iconSize:     [45, 45], // size of the icon
         iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
       });
       var customOptions = ({
