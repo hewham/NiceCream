@@ -57,6 +57,22 @@ page-home {
      padding-top: 20vw;
    }
 
+   .length-container {
+     position: absolute;
+     bottom:0;
+     width: 100%;
+     background-color: #303030;
+     z-index: 1000;
+   }
+
+   .length-text {
+     font-size: 1.4em;
+     margin-top: 4px;
+     margin-bottom: 4px;
+     color: white;
+     padding-left: 6px;
+   }
+
 
 
 

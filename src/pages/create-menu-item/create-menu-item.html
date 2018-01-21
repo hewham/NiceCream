@@ -47,10 +47,7 @@
     </ion-list>
     <div class="gallery-button" text-center>
       <img [src]="ImageSrc" *ngIf="ImageSrc"/>
-      <button *ngIf='ImageChanged==true' class='photo-button' ion-button icon-only (click)='editPhoto()'>
-        <ion-icon color='primary' name='camera'></ion-icon>
-      </button>
-      <button *ngIf='ImageChanged==false' class='no-photo-button' ion-button icon-only (click)='editPhoto()'>
+      <button class='photo-button' ion-button icon-only (click)='editPhoto()'>
         <ion-icon color='primary' name='camera'></ion-icon>
       </button>
     </div>

@@ -5,16 +5,16 @@ page-profile {
   .profilePhoto {
     border-radius: 50%;
     border: 3px solid color($colors, 'primary');
-    width: 50%;
-    margin-left: 25%;
-    margin-top: 20px;
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 10px;
   }
 
   .user-container {
     background-color: #e8e8e8;
     padding-bottom: 2vw;
     padding-top: 12vw;
-    margin-top: -12vw;
+    margin-top: -15vw;
   }
 
   .item-price {
@@ -29,6 +29,10 @@ page-profile {
   .item-photo {
     width: 70px !important;
     height: 70px !important;
+  }
+
+  .item-description {
+    word-wrap: break-word;
   }
 
 

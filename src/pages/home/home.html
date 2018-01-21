@@ -18,5 +18,9 @@
 
   <div id="map"></div>
 
+  <div *ngIf="drivers" class="length-container">
+    <p ion-text text-center class="length-text"><span ion-text color='primary'>{{drivers.length}}</span> Ice Cream Trucks Nearby!</p>
+  </div>
+
 
 </ion-content>

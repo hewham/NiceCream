@@ -75,7 +75,7 @@ export class HomePage {
         this.zoomLevel = 12;
         // this.loading.dismiss();
         this.drawMap();
-        this.track();
+        // this.track();
         this.start();
       }
     });
@@ -89,63 +89,56 @@ export class HomePage {
   }
 
   start() {
-    this.interval = setInterval(
-      (function(self) {
-         return function() {
-            self.track();
+    this.userProvider.fetchLocations(this.rangeLatLngs).subscribe(({data}) => {
+        var iceCream: any;
+        iceCream = Leaflet.icon ({
+          iconUrl: "assets/icon/ice-cream.png",
+          iconSize:     [45, 45], // size of the icon
+          iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
+        });
+        var customOptions = ({
+          className: 'custom',
+          closeOnClick: true,
+          closeButton: false
+        });
+        this.drivers = data;
+        this.drivers = this.drivers.allUsers;
+        console.log("DRIVERS: ",this.drivers);
+        for(let driver of this.drivers){
+            Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup(driver.name, customOptions);
         }
-      })(this), 5000);
+        this.interval = setInterval(
+          (function(self) {
+             return function() {
+                self.track();
+            }
+          })(this), 10000);
+      });
+
+
   }
 
   track(){
     console.log("track()");
-    this.apollo.watchQuery({
-      query: gql`
-        query allUsers(
-         $minLat: Float
-         $maxLat: Float
-         $minLng: Float
-         $maxLng: Float) {
-          allUsers(
-            filter:{
-              lat_gte: $minLat
-              lat_lte: $maxLat
-              lng_gte: $minLng
-              lng_lte: $maxLng
-            }
-            ) {
-            id
-            name
-            lat
-            lng
+    this.userProvider.fetchLocations(this.rangeLatLngs).subscribe(({data}) => {
+          var iceCream: any;
+          iceCream = Leaflet.icon ({
+            iconUrl: "assets/icon/ice-cream.png",
+            iconSize:     [45, 45], // size of the icon
+            iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
+          });
+          var customOptions = ({
+            className: 'custom',
+            closeOnClick: true,
+            closeButton: false
+          });
+          this.drivers = data;
+          this.drivers = this.drivers.allUsers;
+          console.log("DRIVERS: ",this.drivers);
+          for(let driver of this.drivers){
+              Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup(driver.name, customOptions);
           }
-        }
-      `,
-      variables: {
-        minLat: this.rangeLatLngs.minLat,
-        maxLat: this.rangeLatLngs.maxLat,
-        minLng: this.rangeLatLngs.minLng,
-        maxLng: this.rangeLatLngs.maxLng
-      }
-    }).subscribe(({data}) => {
-      var iceCream: any;
-      iceCream = Leaflet.icon ({
-        iconUrl: "assets/icon/ice-cream.png",
-        iconSize:     [45, 45], // size of the icon
-        iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
-      });
-      var customOptions = ({
-        className: 'custom',
-        closeOnClick: true,
-        closeButton: false
-      });
-      this.drivers = data;
-      this.drivers = this.drivers.allUsers;
-      console.log("DRIVERS: ",this.drivers);
-      for(let driver of this.drivers){
-          Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
-      }
-    });
+        });
   }
 
 

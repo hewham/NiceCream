@@ -82,4 +82,36 @@ export class UserProvider {
     })
   }
 
+fetchLocations(rangeLatLngs) {
+  return this.apollo.watchQuery({
+        query: gql`
+          query allUsers(
+           $minLat: Float
+           $maxLat: Float
+           $minLng: Float
+           $maxLng: Float) {
+            allUsers(
+              filter:{
+                lat_gte: $minLat
+                lat_lte: $maxLat
+                lng_gte: $minLng
+                lng_lte: $maxLng
+              }
+              ) {
+              id
+              name
+              lat
+              lng
+            }
+          }
+        `,
+        variables: {
+          minLat: rangeLatLngs.minLat,
+          maxLat: rangeLatLngs.maxLat,
+          minLng: rangeLatLngs.minLng,
+          maxLng: rangeLatLngs.maxLng
+        }
+      })
+    }
+
 }
