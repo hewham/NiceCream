@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { TrackPage } from '../pages/track/track';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 import { ProfilePage } from '../pages/profile/profile';
 
 import { LandingPage } from '../pages/landing/landing';
@@ -22,6 +23,8 @@ export class MyApp {
   rootPage: any = LandingPage;
 
   pages: Array<{title: string, component: any}>;
+
+  rangLatLngs: any;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events) {
     this.initializeApp();
@@ -41,17 +44,10 @@ export class MyApp {
       this.pages = [
         { title: 'Cream Map', component: HomePage },
         { title: 'Truck List', component: ListPage },
-        { title: 'Log In', component: LoginPage }
+        { title: 'Log In', component: LoginPage },
+        { title: 'Sign Up', component: SignupPage }
       ];
     }
-
-    // used for an example of ngFor and navigation
-    // this.pages = [
-    //   { title: 'Home', component: HomePage },
-    //   { title: 'List', component: ListPage },
-    //   { title: 'Profile', component: ProfilePage },
-    //   { title: 'Log In', component: LoginPage }
-    // ];
 
   }
 
@@ -79,13 +75,4 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  setPages() {
-    console.log("resetting pages");
-    this.pages = [
-      { title: 'Start Tracking', component: TrackPage },
-      { title: 'Cream Map', component: HomePage },
-      { title: 'Truck List', component: ListPage },
-      { title: 'Profile', component: ProfilePage },
-    ];
-  }
 }

@@ -3,6 +3,10 @@ page-login {
     background: linear-gradient(#EFEFBB, #D4D3DD);
   }
 
+  ion-item {
+    background-color: transparent !important;
+  }
+
   img {
     padding-top: 20%;
     padding-bottom: 0%;

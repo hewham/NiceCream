@@ -21,7 +21,6 @@ export class UserProvider {
           user{
             id
             name
-            driver
             bio
             profilePhoto
             menuItems {
@@ -59,7 +58,6 @@ export class UserProvider {
             ) {
               id
               name
-              driver
               bio
               profilePhoto
               menuItems {

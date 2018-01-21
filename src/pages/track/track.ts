@@ -12,6 +12,8 @@ import gql from 'graphql-tag';
 
 
 import * as Leaflet from 'leaflet';
+declare var navagator: any;
+
 @Component({
   selector: 'page-track',
   templateUrl: 'track.html',
@@ -58,12 +60,38 @@ export class TrackPage {
 
       });
 
+      this.locationProvider.getLocation().then((data) => {
+        console.log("GOT location!");
+        if (data == "error"){
+          //Error detecting current location
+          console.log("ERROR GETTING LOCATION.....");
+          this.loadingFlag = true;
+          this.showSpinner = false;
+          this.couldNotLocate();
+        }else{
+          //No error detecting current location
+          this.location = data;
+
+          this.rangeLatLngs = this.rangeLatLngsCalc(this.location, 50);
+          console.log("rangelatlngs: ",this.rangeLatLngs);
+          window.localStorage.setItem('rangeLatLngs', JSON.stringify(this.rangeLatLngs));
+          }
+        });
+
     }
 
     ionViewWillLeave() {
       this.menuCtrl.swipeEnable(true);
-      // this.watch.unsubscribe();
-      // clearInterval(this.interval);
+      navigator.geolocation.clearWatch(this.watch);
+      this.tracking = false;
+      this.showButton = true;
+    }
+
+    stopTracking() {
+      console.log("stopTracking()");
+      navigator.geolocation.clearWatch(this.watch);
+      this.tracking = false;
+      this.showButton = true;
     }
 
 
@@ -82,29 +110,6 @@ export class TrackPage {
           }else{
             //No error detecting current location
             this.location = data;
-
-            // this.apollo.mutate ({
-            //   mutation: gql`
-            //     mutation updateUser(
-            //       $id: ID!,
-            //       $lat: Float,
-            //       $lng: Float) {
-            //         updateUser(
-            //           id: $id,
-            //           lat: $lat,
-            //           lng: $lng) {
-            //             id
-            //           }
-            //         }
-            //       `,
-            //   variables: {
-            //     id: this.currentUser.id,
-            //     lat: this.location.latitude,
-            //     lng: +this.location.longitude,
-            //   }
-            // }).toPromise().then(({data})=>{
-            //   console.log("uploaded location to graph.cool!")
-            // });
 
           this.loadingFlag = true;
           this.showImage = false;
@@ -127,8 +132,8 @@ export class TrackPage {
         timeout : 10000,
         enableHighAccuracy: true
       }
-      this.watch = this.geolocation.watchPosition(options);
-      this.watch.subscribe((data) => {
+      this.watch = navigator.geolocation.watchPosition((data) => {
+      // this.watch.subscribe((data) => {
        // data can be a set of coordinates, or an error (if an error occurred).
        console.log("IN geo watch, lat: ",data.coords.latitude,", lng: ",data.coords.longitude);
        this.location.latitude = data.coords.latitude
@@ -147,7 +152,7 @@ export class TrackPage {
          closeButton: false
        });
 
-       Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
+       Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Look. It's you.", customOptions);
 
        this.apollo.mutate ({
          mutation: gql`
@@ -173,8 +178,6 @@ export class TrackPage {
        });
 
       });
-
-
 
     }
 
@@ -234,7 +237,7 @@ export class TrackPage {
         closeButton: false
       });
 
-      Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
+      Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Look. it's you.", customOptions);
     }
 
     couldNotLocate() {
@@ -253,6 +256,5 @@ export class TrackPage {
         ]
       });
       alert.present();
-
     }
   }

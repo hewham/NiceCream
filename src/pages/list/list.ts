@@ -33,4 +33,16 @@ export class ListPage {
       type: 'driver'
     })
   }
+
+  ////////////////////REFRESHER/////////////////////////
+  doRefresh(refresher) {
+    console.log('DOREFRESH');
+    this.userProvider.getUserList(this.rangeLatLngs).refetch(({data}) => {
+      this.drivers = data;
+      this.drivers = this.drivers.allUsers;
+    }).then(() => {
+      refresher.complete();
+    });
+  }
+  /////////////////////////////////////////////////////
 }

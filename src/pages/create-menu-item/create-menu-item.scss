@@ -5,6 +5,10 @@ page-create-menu-item {
     border: color($colors, 'primary') 2px solid;
   }
 
+  ion-item {
+    background-color: transparent !important;
+  }
+
   ion-label {
     color: #606060;
   }

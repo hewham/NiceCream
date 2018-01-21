@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { HomePage } from '../home/home';
+import { TrackPage } from '../track/track';
 
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -121,7 +122,7 @@ saveProfileMutation = gql`
     $id: ID!,
     $name: String!,
     $bio: String!,
-    $driver: Boolean!,
+    $driver: Boolean,
     $profilePhoto: String!) {
       updateUser(
         id: $id,
@@ -153,11 +154,11 @@ saveProfileMutation = gql`
             id: this.id,
             name: this.form.value.name,
             bio: this.form.value.bio,
-            driver: this.driver,
+            driver: true,
             profilePhoto: this.profileImageSrc
           }
         }).toPromise().then(()=>{
-          this.navCtrl.setRoot(HomePage);
+          this.navCtrl.setRoot(TrackPage);
         });
       }
       if (!this.form.valid){

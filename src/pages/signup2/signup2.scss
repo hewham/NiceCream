@@ -2,7 +2,11 @@ page-signup2 {
   ion-content {
     background: linear-gradient(#EFEFBB, #D4D3DD);
   }
-  
+
+  ion-item {
+    background-color: transparent !important;
+  }
+
   img {
     padding-bottom: 0%;
     border-radius: 50% !important;
