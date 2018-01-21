@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController, LoadingController, MenuController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController, MenuController, AlertController } from 'ionic-angular';
 
 import { LocationProvider } from '../../providers/location';
 import { UserProvider } from '../../providers/user';
@@ -20,6 +20,7 @@ export class TrackPage {
 
     currentUser: any;
     map: any;
+    watch: any;
 
     location: any = {
       latitude: 35,
@@ -29,12 +30,14 @@ export class TrackPage {
     loading: any;
     loadingFlag: boolean = false;
     showImage: boolean = true;
+    showSpinner: boolean = true;
     showButton: boolean = false;
     tracking: boolean = false;
     rangeLatLngs: any;
+    interval: any;
 
 
-    constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public userProvider: UserProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController, public geolocation: Geolocation, public apollo: Apollo) {
+    constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public userProvider: UserProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController, public geolocation: Geolocation, public apollo: Apollo, public alertCtrl: AlertController) {
 
 
     }
@@ -42,6 +45,7 @@ export class TrackPage {
     ionViewDidLoad() {
       this.menuCtrl.swipeEnable(false);
       this.showImage = true;
+      this.tracking = false;
       this.loadingFlag = false;
       this.userProvider.getCurrentUserInfo().subscribe(({data}) => {
 
@@ -50,40 +54,7 @@ export class TrackPage {
         this.currentUser = this.currentUser.user;
         window.localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
         console.log("currentUser: ",this.currentUser);
-
-        if(!this.currentUser.driver || this.currentUser == null){
-          this.locationProvider.getLocation().then((data) => {
-            console.log("GOT location, getting events...");
-            console.log("LOCATION DATA RETURNED IS: ",data);
-            if (data == "error"){
-              //Error detecting current location
-              console.log("ERROR GETTING LOCATION.....");
-              this.setUserLocationBasedOffCurrentUser();
-            }else{
-              //No error detecting current location
-              this.location = window.localStorage.getItem('userLocation');
-              if (this.location != undefined){
-                this.location = JSON.parse(this.location);
-              }else{
-                this.setUserLocationBasedOffCurrentUser();
-              }
-            }
-
-            this.rangeLatLngs = this.rangeLatLngsCalc(this.location, 50);
-            console.log("rangelatlngs: ",this.rangeLatLngs);
-
-            this.loadingFlag = true;
-            this.showImage = false;
-            this.zoomLevel = 12;
-            // this.loading.dismiss();
-            this.drawMap();
-          });
-        }//CREAMERS
-        else if(this.currentUser.driver){
-        this.showImage = false;
         this.showButton = true;
-
-        }
 
       });
 
@@ -91,44 +62,59 @@ export class TrackPage {
 
     ionViewWillLeave() {
       this.menuCtrl.swipeEnable(true);
+      this.watch.unsubscribe();
+      // clearInterval(this.interval);
     }
 
-    setUserLocationBasedOffCurrentUser() {
-      let toast = this.toastCtrl.create({
-        message: 'Unable to get Location, Using Home City',
-        duration: 4000,
-        position: 'top'
-      });
-      toast.present();
-      // this.location.latitude = this.currentUser.latitude;
-      // this.location.longitude = this.currentUser.longitude;
-      // this.location.city = this.currentUser.city;
-      // this.location.state = this.currentUser.state;
-      window.localStorage.setItem('userLocation', JSON.stringify(this.location));
-    }
 
     startTracking() {
       if(!this.tracking){
         this.tracking = true;
         this.showButton = false;
         this.locationProvider.getLocation().then((data) => {
-          console.log("GOT location, getting events...");
-          console.log("LOCATION DATA RETURNED IS: ",data);
+          console.log("GOT location!");
           if (data == "error"){
             //Error detecting current location
             console.log("ERROR GETTING LOCATION.....");
-            // this.setUserLocationBasedOffCurrentUser();
+            this.loadingFlag = true;
+            this.showSpinner = false;
+            this.couldNotLocate();
           }else{
             //No error detecting current location
-            this.location = window.localStorage.getItem('userLocation');
-            this.location = JSON.parse(this.location);
-          }
+            this.location = data;
+
+            this.apollo.mutate ({
+              mutation: gql`
+                mutation updateUser(
+                  $id: ID!,
+                  $lat: Float,
+                  $lng: Float) {
+                    updateUser(
+                      id: $id,
+                      lat: $lat,
+                      lng: $lng) {
+                        id
+                      }
+                    }
+                  `,
+              variables: {
+                id: this.currentUser.id,
+                lat: this.location.latitude,
+                lng: +this.location.longitude,
+              }
+            }).toPromise().then(({data})=>{
+              console.log("uploaded location to graph.cool!")
+            });
+            
           this.loadingFlag = true;
           this.showImage = false;
           this.zoomLevel = 12;
           this.drawMap();
           this.track();
-        });
+        }
+      });
+
+
 
       }else{
         this.tracking = false;
@@ -137,8 +123,8 @@ export class TrackPage {
 
     track() {
       console.log("in track")
-      let watch = this.geolocation.watchPosition();
-      watch.subscribe((data) => {
+      this.watch = this.geolocation.watchPosition();
+      this.watch.subscribe((data) => {
        // data can be a set of coordinates, or an error (if an error occurred).
        console.log("IN geo watch, lat: ",data.coords.latitude,", lng: ",data.coords.longitude);
        this.location.latitude = data.coords.latitude
@@ -222,9 +208,9 @@ export class TrackPage {
     drawMap() {
       if (this.map != undefined){
         this.map.remove();
-        this.map = Leaflet.map('map');
+        this.map = Leaflet.map('trackMap');
       }else{
-        this.map = Leaflet.map('map');
+        this.map = Leaflet.map('trackMap');
       }
       Leaflet.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaGV3aGFtIiwiYSI6ImNqNWl5dzRrNzJoZWgyd25xemNycHd4cmEifQ.Y6GymqkSWKSy60flBLgKpQ', {
         maxZoom: 16
@@ -245,5 +231,24 @@ export class TrackPage {
       });
 
       Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
+    }
+
+    couldNotLocate() {
+      console.log("couldNotLocate()")
+      let alert = this.alertCtrl.create({
+        title: "Couldn't Find You",
+        message: '<p>NiceCream relies on using your location to find that sweet, sweet cream.</p> <p>Show yourself!</p>',
+        buttons: [
+          {
+            text: 'Try Again',
+            handler: () => {
+              console.log('Try Again clicked');
+              this.ionViewDidLoad();
+            }
+          }
+        ]
+      });
+      alert.present();
+
     }
   }

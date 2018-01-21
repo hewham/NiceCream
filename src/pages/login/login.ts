@@ -8,6 +8,7 @@ import {
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { HomePage } from '../home/home';
+import { TrackPage } from '../track/track';
 
 
 //Apollo connection
@@ -64,7 +65,7 @@ export class LoginPage {
 
     }).then(() => {
       this.loading.dismiss();
-      this.nav.setRoot(HomePage);
+      this.nav.setRoot(TrackPage);
     }).catch( (err) => {
       this.loading.dismiss();
       let alert = this.alertCtrl.create({

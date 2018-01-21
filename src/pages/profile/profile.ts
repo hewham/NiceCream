@@ -16,6 +16,7 @@ export class ProfilePage {
 
   currentUser: any;
   menuItems: any;
+  type: any = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
   }
@@ -26,8 +27,14 @@ export class ProfilePage {
   }
 
   initialize() {
+    this.type = this.navParams.get("type");
+    if(this.type == "driver"){
+      this.currentUser = this.navParams.get('user');
+    }else{
     this.currentUser = window.localStorage.getItem("currentUser");
     this.currentUser = JSON.parse(this.currentUser);
+    }
+
     if(this.currentUser){
       this.menuItems = this.currentUser.menuItems;
     }

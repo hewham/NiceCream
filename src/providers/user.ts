@@ -40,4 +40,48 @@ export class UserProvider {
     })
   }
 
+
+  getUserList(rangeLatLngs) {
+    return this.apollo.watchQuery({
+      query: gql`
+        query allUsers(
+         $minLat: Float
+         $maxLat: Float
+         $minLng: Float
+         $maxLng: Float) {
+          allUsers(
+            filter:{
+              lat_gte: $minLat
+              lat_lte: $maxLat
+              lng_gte: $minLng
+              lng_lte: $maxLng
+            }
+            ) {
+              id
+              name
+              driver
+              bio
+              profilePhoto
+              menuItems {
+                id
+                name
+                description
+                photo
+                price
+              }
+              _menuItemsMeta {
+                count
+              }
+          }
+        }
+      `,
+      variables: {
+        minLat: rangeLatLngs.minLat,
+        maxLat: rangeLatLngs.maxLat,
+        minLng: rangeLatLngs.minLng,
+        maxLng: rangeLatLngs.maxLng
+      }
+    })
+  }
+
 }

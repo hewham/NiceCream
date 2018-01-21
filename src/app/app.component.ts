@@ -4,13 +4,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
+import { TrackPage } from '../pages/track/track';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from '../pages/login/login';
 import { ProfilePage } from '../pages/profile/profile';
 
 import { LandingPage } from '../pages/landing/landing';
 import { Signup2Page } from '../pages/signup2/signup2';
-import { Signup1Page } from '../pages/signup1/signup1';
 
 
 @Component({
@@ -27,17 +27,20 @@ export class MyApp {
     this.initializeApp();
 
     if (window.localStorage.getItem('graphcoolToken') != null) {
-      this.rootPage = HomePage;
-      // this.rootPage = Signup1Page;
+      this.rootPage = TrackPage;
+      // this.rootPage = HomePage;
       // this.rootPage = ProfilePage;
       this.pages = [
-        { title: 'Home', component: HomePage },
+        { title: 'Start Tracking', component: TrackPage },
+        { title: 'Cream Map', component: HomePage },
+        { title: 'Truck List', component: ListPage },
         { title: 'Profile', component: ProfilePage },
       ];
     } else {
       this.rootPage = LandingPage;
       this.pages = [
-        { title: 'Home', component: HomePage },
+        { title: 'Cream Map', component: HomePage },
+        { title: 'Truck List', component: ListPage },
         { title: 'Log In', component: LoginPage }
       ];
     }

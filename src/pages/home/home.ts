@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController, LoadingController, MenuController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController, MenuController, AlertController } from 'ionic-angular';
 
 import { LocationProvider } from '../../providers/location';
 import { UserProvider } from '../../providers/user';
@@ -34,12 +34,14 @@ export class HomePage {
   loading: any;
   loadingFlag: boolean = false;
   showImage: boolean = true;
+  showSpinner: boolean = true;
   showButton: boolean = false;
   tracking: boolean = false;
   rangeLatLngs: any;
+  interval: any;
 
 
-  constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public userProvider: UserProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController, public geolocation: Geolocation, public apollo: Apollo) {
+  constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public userProvider: UserProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController, public geolocation: Geolocation, public apollo: Apollo, public alertCtrl: AlertController) {
 
 
   }
@@ -47,29 +49,35 @@ export class HomePage {
   ionViewDidLoad() {
     this.menuCtrl.swipeEnable(false);
     this.showImage = true;
+    this.showSpinner = true;
     this.loadingFlag = false;
 
     this.locationProvider.getLocation().then((data) => {
-      console.log("GOT location...");
-      console.log("LOCATION DATA RETURNED IS: ",data);
+      console.log("GOT location!");
       if (data == "error"){
         //Error detecting current location
         console.log("ERROR GETTING LOCATION.....");
-        this.setUserLocationBasedOffCurrentUser();
+        this.loadingFlag = true;
+        this.showSpinner = false;
+        this.couldNotLocate();
       }else{
         //No error detecting current location
         this.location = data;
+
+        this.rangeLatLngs = this.rangeLatLngsCalc(this.location, 50);
+        console.log("rangelatlngs: ",this.rangeLatLngs);
+        window.localStorage.setItem('rangeLatLngs', JSON.stringify(this.rangeLatLngs));
+
+
+        this.loadingFlag = true;
+        this.showImage = false;
+        this.showSpinner = false;
+        this.zoomLevel = 12;
+        // this.loading.dismiss();
+        this.drawMap();
+        this.track();
+        this.start();
       }
-
-      this.rangeLatLngs = this.rangeLatLngsCalc(this.location, 50);
-      console.log("rangelatlngs: ",this.rangeLatLngs);
-
-      this.loadingFlag = true;
-      this.showImage = false;
-      this.zoomLevel = 12;
-      // this.loading.dismiss();
-      this.drawMap();
-      this.start();
     });
 
 
@@ -77,27 +85,20 @@ export class HomePage {
 
   ionViewWillLeave() {
     this.menuCtrl.swipeEnable(true);
-  }
-
-  setUserLocationBasedOffCurrentUser() {
-    let toast = this.toastCtrl.create({
-      message: 'Unable to get Location, Using Home City',
-      duration: 4000,
-      position: 'top'
-    });
-    toast.present();
-    // this.location.latitude = this.currentUser.latitude;
-    // this.location.longitude = this.currentUser.longitude;
-    // this.location.city = this.currentUser.city;
-    // this.location.state = this.currentUser.state;
-    window.localStorage.setItem('userLocation', JSON.stringify(this.location));
+    clearInterval(this.interval);
   }
 
   start() {
-    setInterval(this.track(), 3000);
+    this.interval = setInterval(
+      (function(self) {
+         return function() {
+            self.track();
+        }
+      })(this), 4000);
   }
 
   track(){
+    console.log("track()");
     this.apollo.watchQuery({
       query: gql`
         query allUsers(
@@ -127,9 +128,23 @@ export class HomePage {
         maxLng: this.rangeLatLngs.maxLng
       }
     }).subscribe(({data}) => {
+      var iceCream: any;
+      iceCream = Leaflet.icon ({
+        iconUrl: "assets/icon/ice-cream.png",
+        iconSize:     [65, 65], // size of the icon
+        iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
+      });
+      var customOptions = ({
+        className: 'custom',
+        closeOnClick: true,
+        closeButton: false
+      });
       this.drivers = data;
       this.drivers = this.drivers.allUsers;
       console.log("DRIVERS: ",this.drivers);
+      for(let driver of this.drivers){
+          Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
+      }
     });
   }
 
@@ -166,8 +181,28 @@ export class HomePage {
       closeButton: false
     });
 
-    Leaflet.marker([this.location.latitude, this.location.longitude], {icon:pin}).addTo(this.map).bindPopup("Ice Cream!!!", customOptions);
+    Leaflet.marker([this.location.latitude, this.location.longitude], {icon:pin}).addTo(this.map).bindPopup("You", customOptions);
   }
+
+  couldNotLocate() {
+    console.log("couldNotLocate()")
+    let alert = this.alertCtrl.create({
+      title: "Couldn't Find You",
+      message: '<p>NiceCream relies on using your location to find that sweet, sweet cream.</p> <p>Show yourself!</p>',
+      buttons: [
+        {
+          text: 'Try Again',
+          handler: () => {
+            console.log('Try Again clicked');
+            this.ionViewDidLoad();
+          }
+        }
+      ]
+    });
+    alert.present();
+
+  }
+
 
 
   rangeLatLngsCalc(LatLng, range){

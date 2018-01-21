@@ -7,22 +7,25 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>track</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <!-- <ion-title>track</ion-title> -->
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <div *ngIf="showButton">
-    <div *ngIf="currentUser.driver">
-      <img src='assets/imgs/background.png' />
-      <div *ngIf="!tracking" class="button-off" (click)='startTracking()'>
-        <p text-center class="button-off-text">Start Tracking</p>
-      </div>
-      <div *ngIf="tracking" class="button-on" (click)='startTracking()'>
-        <p text-center class="button-on-text">Tracking <ion-icon color="secondary" name="checkmark"></ion-icon></p>
-      </div>
+    <img src='assets/imgs/background.png' />
+    <div *ngIf="!tracking" class="button-off" (click)='startTracking()'>
+      <p text-center class="button-off-text">Start Tracking</p>
+    </div>
+    <div *ngIf="tracking" class="button-on" (click)='startTracking()'>
+      <p text-center class="button-on-text">Tracking <ion-icon color="secondary" name="checkmark"></ion-icon></p>
     </div>
   </div>
+
+  <div id="trackMap"></div>
 </ion-content>

@@ -5,7 +5,8 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Profile</ion-title>
+    <ion-title *ngIf="type=='!driver'">Profile</ion-title>
+    <ion-title *ngIf="type=='driver'">{{currentUser.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -23,7 +24,7 @@
       <ion-list-header text-center>
         <span ion-text color='primary'>{{this.currentUser._menuItemsMeta.count}}</span>&nbsp;Menu Items
       </ion-list-header>
-      <p text-center class="add" (click)="createMenuItem()"><ion-icon color="primary" name="add"></ion-icon> add Menu Item</p>
+      <p *ngIf="type!='driver'" text-center class="add" (click)="createMenuItem()"><ion-icon color="primary" name="add"></ion-icon> add Menu Item</p>
       <ion-item *ngFor="let item of menuItems">
         <ion-avatar item-left>
           <img [src]="item.photo" class="item-photo"/>

@@ -1,16 +1,18 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle *ngIf="!showImage">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>NiceCream Map</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <div *ngIf="showImage" class="img-container">
     <img src='assets/imgs/splash.png' />
-    <ion-spinner class='spinner'></ion-spinner>
+    <div *ngIf="showSpinner">
+      <ion-spinner class='spinner'></ion-spinner>
+    </div>
   </div>
 
 
