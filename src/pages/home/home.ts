@@ -39,6 +39,7 @@ export class HomePage {
   tracking: boolean = false;
   rangeLatLngs: any;
   interval: any;
+  markerGroup = Leaflet.layerGroup();
 
 
   constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public userProvider: UserProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController, public geolocation: Geolocation, public apollo: Apollo, public alertCtrl: AlertController) {
@@ -73,7 +74,7 @@ export class HomePage {
         this.loadingFlag = true;
         this.showImage = false;
         this.showSpinner = false;
-        this.zoomLevel = 12;
+        this.zoomLevel = 13;
         // this.loading.dismiss();
         this.drawMap();
         // this.track();
@@ -98,34 +99,6 @@ export class HomePage {
             self.track();
         }
       })(this), 15000);
-    // this.userProvider.fetchLocations(this.rangeLatLngs).subscribe(({data}) => {
-    //     var iceCream: any;
-    //     iceCream = Leaflet.icon ({
-    //       iconUrl: "assets/icon/ice-cream.png",
-    //       iconSize:     [45, 45], // size of the icon
-    //       iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
-    //     });
-    //     var customOptions = ({
-    //       className: 'custom',
-    //       closeOnClick: true,
-    //       closeButton: false
-    //     });
-    //     this.drivers = data;
-    //     this.drivers = this.drivers.allUsers;
-    //     console.log("DRIVERS: ",this.drivers);
-    //     for(let driver of this.drivers){
-    //         Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup(driver.name, customOptions);
-    //     }
-    //
-    //     this.interval = setInterval(
-    //       (function(self) {
-    //          return function() {
-    //             self.track();
-    //         }
-    //       })(this), 15000);
-    //   });
-    //
-
   }
 
   track(){
@@ -145,8 +118,10 @@ export class HomePage {
           this.drivers = data;
           this.drivers = this.drivers.allUsers;
           console.log("DRIVERS: ",this.drivers);
+          this.markerGroup.clearLayers();
+          this.markerGroup = Leaflet.layerGroup().addTo(this.map);
           for(let driver of this.drivers){
-              Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup(driver.name, customOptions);
+              Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.markerGroup).bindPopup(driver.name, customOptions);
           }
         });
   }

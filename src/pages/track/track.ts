@@ -37,6 +37,7 @@ export class TrackPage {
     tracking: boolean = false;
     rangeLatLngs: any;
     interval: any;
+    markerGroup = Leaflet.layerGroup();
 
 
     constructor(public navCtrl: NavController, public locationProvider: LocationProvider, public userProvider: UserProvider, public toastCtrl: ToastController, public loadingCtrl: LoadingController, public menuCtrl: MenuController, public geolocation: Geolocation, public apollo: Apollo, public alertCtrl: AlertController) {
@@ -113,7 +114,7 @@ export class TrackPage {
 
           this.loadingFlag = true;
           this.showImage = false;
-          this.zoomLevel = 12;
+          this.zoomLevel = 13;
           this.drawMap();
           this.track();
         }
@@ -152,7 +153,10 @@ export class TrackPage {
          closeButton: false
        });
 
-       Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.map).bindPopup("Look. It's you.", customOptions);
+       this.markerGroup.clearLayers();
+       this.markerGroup = Leaflet.layerGroup().addTo(this.map);
+
+       Leaflet.marker([this.location.latitude, this.location.longitude], {icon:iceCreamIcon}).addTo(this.markerGroup).bindPopup("Look. It's you.", customOptions);
 
        this.apollo.mutate ({
          mutation: gql`
