@@ -64,7 +64,8 @@ export class HomePage {
         //No error detecting current location
         this.location = data;
 
-        this.rangeLatLngs = this.rangeLatLngsCalc(this.location, 50);
+        //ice cream trucks within 30 miles
+        this.rangeLatLngs = this.rangeLatLngsCalc(this.location, 30);
         console.log("rangelatlngs: ",this.rangeLatLngs);
         window.localStorage.setItem('rangeLatLngs', JSON.stringify(this.rangeLatLngs));
 
@@ -89,32 +90,41 @@ export class HomePage {
   }
 
   start() {
-    this.userProvider.fetchLocations(this.rangeLatLngs).subscribe(({data}) => {
-        var iceCream: any;
-        iceCream = Leaflet.icon ({
-          iconUrl: "assets/icon/ice-cream.png",
-          iconSize:     [45, 45], // size of the icon
-          iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
-        });
-        var customOptions = ({
-          className: 'custom',
-          closeOnClick: true,
-          closeButton: false
-        });
-        this.drivers = data;
-        this.drivers = this.drivers.allUsers;
-        console.log("DRIVERS: ",this.drivers);
-        for(let driver of this.drivers){
-            Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup(driver.name, customOptions);
+    console.log("start()");
+    this.track();
+    this.interval = setInterval(
+      (function(self) {
+         return function() {
+            self.track();
         }
-        this.interval = setInterval(
-          (function(self) {
-             return function() {
-                self.track();
-            }
-          })(this), 10000);
-      });
-
+      })(this), 15000);
+    // this.userProvider.fetchLocations(this.rangeLatLngs).subscribe(({data}) => {
+    //     var iceCream: any;
+    //     iceCream = Leaflet.icon ({
+    //       iconUrl: "assets/icon/ice-cream.png",
+    //       iconSize:     [45, 45], // size of the icon
+    //       iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
+    //     });
+    //     var customOptions = ({
+    //       className: 'custom',
+    //       closeOnClick: true,
+    //       closeButton: false
+    //     });
+    //     this.drivers = data;
+    //     this.drivers = this.drivers.allUsers;
+    //     console.log("DRIVERS: ",this.drivers);
+    //     for(let driver of this.drivers){
+    //         Leaflet.marker([driver.lat, driver.lng], {icon:iceCream}).addTo(this.map).bindPopup(driver.name, customOptions);
+    //     }
+    //
+    //     this.interval = setInterval(
+    //       (function(self) {
+    //          return function() {
+    //             self.track();
+    //         }
+    //       })(this), 15000);
+    //   });
+    //
 
   }
 
@@ -155,12 +165,6 @@ export class HomePage {
     }).addTo(this.map);
     this.map.setView([this.location.latitude, this.location.longitude], this.zoomLevel);
 
-    // var iceCreamIcon: any;
-    // iceCreamIcon = Leaflet.icon ({
-    //   iconUrl: "assets/icon/ice-cream.png",
-    //   iconSize:     [45, 45], // size of the icon
-    //   iconAnchor:   [20, 57] // point of the icon which will correspond to marker's location
-    // });
     var pin: any;
     pin = Leaflet.icon ({
       iconUrl: "assets/icon/pin.png",

@@ -49,4 +49,19 @@ page-profile {
   .signup-button {
 
   }
+
+  .delete-button{
+    position: absolute;
+    top: 0vw;
+    left: 0vw;
+    width: 9vw;
+    height: 9vw !important;
+    background-color: white;
+    // border: color($colors, 'danger') solid 1px;
+  }
+
+  .delete-icon {
+    font-size: 2em;
+    text-align: center;
+  }
 }

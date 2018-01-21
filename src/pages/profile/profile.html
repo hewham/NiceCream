@@ -18,6 +18,7 @@
     <div class="user-container">
       <h2 text-center class="name">{{currentUser.name}}</h2>
       <p padding-left padding-right text-center class="bio">{{currentUser.bio}}</p>
+      <p ion-text text-center class="logout" color='primary' (click)="logout()" *ngIf="type!='driver'"><u>Log Out</u>&nbsp;<ion-icon name="arrow-forward" color="primary"></ion-icon></p>
     </div>
 
     <ion-list>
@@ -25,22 +26,32 @@
         <span ion-text color='primary'>{{this.currentUser._menuItemsMeta.count}}</span>&nbsp;Menu Items
       </ion-list-header>
       <p *ngIf="type!='driver'" text-center class="add" (click)="createMenuItem()"><ion-icon color="primary" name="add"></ion-icon> add Menu Item</p>
-      <ion-item *ngFor="let item of menuItems">
-        <ion-avatar item-left>
-          <img [src]="item.photo" class="item-photo"/>
-        </ion-avatar>
-        <ion-grid>
-          <ion-row>
-            <ion-col col-9>
-              <h4 class="item-name">{{item.name}}</h4>
-            </ion-col>
-            <ion-col col-3>
-              <p class="item-price">${{item.price}}</p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        <p class="item-description" text-wrap>{{item.description}}</p>
-      </ion-item>
+      <ion-item-sliding *ngFor="let item of menuItems">
+        <ion-item>
+          <ion-avatar item-left>
+            <img [src]="item.photo" class="item-photo"/>
+          </ion-avatar>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-9>
+                <h4 class="item-name">{{item.name}}</h4>
+              </ion-col>
+              <ion-col col-3>
+                <p class="item-price">${{item.price}}</p>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <p class="item-description" text-wrap>{{item.description}}</p>
+          <button ion-button round class="delete-button" *ngIf="type!='driver'">
+            <ion-icon class="delete-icon" (click)="deleteItem(item)" color="danger" ios="ios-remove-circle-outline" md="md-remove-circle"></ion-icon>
+          </button>
+        </ion-item>
+        <ion-item-options side="right" *ngIf="type!='driver'">
+          <button ion-button color="danger" (click)="deleteItem(item)">
+            Delete
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
   </div>
 

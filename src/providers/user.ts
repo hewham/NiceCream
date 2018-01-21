@@ -100,6 +100,7 @@ fetchLocations(rangeLatLngs) {
               ) {
               id
               name
+              email
               lat
               lng
             }
@@ -110,7 +111,8 @@ fetchLocations(rangeLatLngs) {
           maxLat: rangeLatLngs.maxLat,
           minLng: rangeLatLngs.minLng,
           maxLng: rangeLatLngs.maxLng
-        }
+        },
+        fetchPolicy: 'network-only'
       })
     }
 
